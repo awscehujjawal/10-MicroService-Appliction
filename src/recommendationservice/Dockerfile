@@ -35,6 +35,10 @@ WORKDIR /recommendationservice
 # Grab packages from builder
 COPY --from=builder /usr/local/lib/python3.10/ /usr/local/lib/python3.10/
 
+ARG NEWRELIC_AGENT_VERSION
+ENV NEWRELIC_AGENT_VERSION=${NEWRELIC_AGENT_VERSION:-8.7.0}
+RUN pip install newrelic==$NEWRELIC_AGENT_VERSION
+
 # Add the application
 COPY . .
 
