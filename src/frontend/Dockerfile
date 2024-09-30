@@ -1,3 +1,4 @@
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.20.4-alpine@sha256:0a03b591c358a0bb02e39b93c30e955358dadd18dc507087a3b7f3912c17fe13 as builder
+FROM golang:1.21.3-alpine@sha256:926f7f7e1ab8509b4e91d5ec6d5916ebb45155b0c8920291ba9f361d65385806 as builder
 RUN apk add --no-cache ca-certificates git
 RUN apk add build-base
 WORKDIR /src
@@ -22,11 +23,18 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 
+RUN go get github.com/newrelic/go-agent/v3/newrelic
+RUN go get github.com/newrelic/go-agent/v3/integrations/nrgorilla
+RUN go get github.com/newrelic/go-agent/v3/integrations/nrgrpc
+RUN go get github.com/newrelic/go-agent/v3/integrations/nrpkgerrors
+RUN go get github.com/newrelic/go-agent/v3/integrations/logcontext-v2/nrlogrus
+RUN go get github.com/newrelic/go-agent/v3/integrations/nrlogrus
+
 # Skaffold passes in debug-oriented compiler flags
 ARG SKAFFOLD_GO_GCFLAGS
 RUN go build -gcflags="${SKAFFOLD_GO_GCFLAGS}" -o /go/bin/frontend .
 
-FROM alpine:3.18.0@sha256:02bb6f428431fbc2809c5d1b41eab5a68350194fb508869a33cb1af4444c9b11 as release
+FROM alpine:3.18.4@sha256:eece025e432126ce23f223450a0326fbebde39cdf496a85d8c016293fc851978 as release
 RUN apk add --no-cache ca-certificates \
     busybox-extras net-tools bind-tools
 WORKDIR /src
