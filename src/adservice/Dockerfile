@@ -40,3 +40,9 @@ COPY --from=builder /app .
 
 EXPOSE 9555
 ENTRYPOINT ["/app/build/install/hipstershop/bin/AdService"]
+ARG NEWRELIC_AGENT_DOWNLOAD
+ENV NEWRELIC_AGENT_DOWNLOAD=${NEWRELIC_AGENT_DOWNLOAD:-https://download.newrelic.com/newrelic/java-agent/newrelic-agent/8.9.1/newrelic-java.zip}
+RUN wget -q $NEWRELIC_AGENT_DOWNLOAD -O newrelic.zip
+RUN unzip -q newrelic.zip
+RUN rm -f newrelic.zip
+RUN ls /app/newrelic
