@@ -10,7 +10,6 @@
   "author": "Jonathan Lui",
   "license": "ISC",
   "dependencies": {
-    "newrelic": "9.10.2",
     "@google-cloud/profiler": "5.0.4",
     "@grpc/grpc-js": "1.8.14",
     "@grpc/proto-loader": "0.7.7",
