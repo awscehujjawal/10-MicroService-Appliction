@@ -706,6 +706,25 @@ spec:
           ports:
             - containerPort: 9555
           env:
+          - name: NEW_RELIC_LICENSE_KEY
+            valueFrom:
+               secretKeyRef:
+                 name: newrelic-key
+                 key: new-relic-license-key
+        - name: PORT
+          value: "9555"
+        - name: NEW_RELIC_APP_NAME
+          value: "store-adservice"
+        - name: NEW_RELIC_LOG_FILE_NAME
+          value: "STDOUT"
+        - name: NEW_RELIC_LOG_LEVEL
+          value: "info"
+        - name: NEW_RELIC_APPLICATION_LOGGING_ENABLED
+          value: "true"
+        - name: NEW_RELIC_APPLICATION_LOGGING_LOCAL_DECORATING_ENABLED
+          value: "false"
+        - name: NEW_RELIC_APPLICATION_LOGGING_FORWARDING_ENABLED
+          value: "false"
             - name: PORT
               value: "9555"
           resources:
