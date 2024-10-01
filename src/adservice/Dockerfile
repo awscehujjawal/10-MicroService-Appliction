@@ -22,12 +22,8 @@ RUN chmod +x gradlew
 RUN ./gradlew downloadRepos
 
 COPY . .
-ARG NEWRELIC_AGENT_DOWNLOAD
-ENV NEWRELIC_AGENT_DOWNLOAD=${NEWRELIC_AGENT_DOWNLOAD:-https://download.newrelic.com/newrelic/java-agent/newrelic-agent/8.9.1/newrelic-java.zip}
-RUN wget -q $NEWRELIC_AGENT_DOWNLOAD -O newrelic.zip
-RUN unzip -q newrelic.zip
-RUN rm -f newrelic.zip
-RUN ls /app/newrelic
+ADD ./newrelic/newrelic.jar /usr/local/tomcat/newrelic/newrelic.jar
+ADD ./newrelic/newrelic.yml /usr/local/tomcat/newrelic/newrelic.yml
 RUN chmod +x gradlew
 RUN ./gradlew installDist
 
